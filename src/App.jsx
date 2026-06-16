@@ -27,8 +27,8 @@ import {
 } from "lucide-react";
 
 const DOT_STYLES = [
-  { value: "extra-rounded", label: "Extra rund" },
   { value: "rounded", label: "Rund" },
+  { value: "extra-rounded", label: "Extra rund" },
   { value: "dots", label: "Punkte" },
   { value: "classy", label: "Classy" },
   { value: "classy-rounded", label: "Classy rund" },
@@ -56,7 +56,7 @@ const MAX_LOGO_BYTES = 1024 * 1024; // 1 MB
 const DEFAULTS = {
   contentType: "url",
   form: { encryption: "WPA" },
-  dotsType: "extra-rounded",
+  dotsType: "rounded",
   cornerType: "extra-rounded",
   dotsColor: "#15140f",
   bgColor: "#ffffff",

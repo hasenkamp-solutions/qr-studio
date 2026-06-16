@@ -63,3 +63,12 @@ Impressum und Datenschutz sind in der App über den Footer erreichbar
 > **Vor dem Livegang prüfen:** Im Datenschutz (Abschnitt 3) ist der
 > Hosting-Anbieter einzutragen — für Cloudflare Pages:
 > **Cloudflare, Inc.**, 101 Townsend St, San Francisco, CA 94107, USA.
+
+## Lizenz
+
+Der Quellcode steht unter der **[MIT-Lizenz](LICENSE)** — frei nutzbar,
+anpassbar und einbaubar (auch kommerziell), unter Beibehaltung des
+Copyright-Hinweises.
+
+Die mitgelieferten Schriftarten (Fraunces, Plus Jakarta Sans, Space Mono)
+stehen unter der **SIL Open Font License (OFL)** und sind davon unberührt.
