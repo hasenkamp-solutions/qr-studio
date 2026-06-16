@@ -182,7 +182,9 @@ export default function App() {
       type: "svg",
       data: data || " ",
       image: logo || undefined,
-      qrOptions: { errorCorrectionLevel: "H" },
+      // Mit Logo: höchste Korrektur (H, ~30%). Ohne Logo: M (~15%) für weniger
+      // Module und größere Punkte → aus Entfernung leichter scanbar.
+      qrOptions: { errorCorrectionLevel: logo ? "H" : "M" },
       dotsOptions: { color: dotsColor, type: dotsType },
       cornersSquareOptions: { type: cornerType, color: dotsColor },
       cornersDotOptions: { type: "dot", color: dotsColor },
@@ -663,7 +665,11 @@ export default function App() {
             </div>
             <div className="preview-meta">
               <ScanLine size={14} />
-              <span>Fehlerkorrektur H — bleibt trotz Logo scanbar</span>
+              <span>
+                {logo
+                  ? "Fehlerkorrektur H — bleibt trotz Logo scanbar"
+                  : "Fehlerkorrektur M — größere Punkte, leichter scanbar"}
+              </span>
             </div>
             <div className="actions">
               <button className="btn primary" onClick={() => download("png")}>
