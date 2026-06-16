@@ -55,7 +55,7 @@ const MAX_LOGO_BYTES = 1024 * 1024; // 1 MB
 // Standardwerte (für Initialzustand und Zurücksetzen)
 const DEFAULTS = {
   contentType: "url",
-  form: { url: "https://example.com", encryption: "WPA" },
+  form: { encryption: "WPA" },
   dotsType: "extra-rounded",
   cornerType: "extra-rounded",
   dotsColor: "#15140f",
@@ -718,7 +718,7 @@ export default function App() {
 
       <footer className="site-footer">
         <span className="footer-service">
-          ein Service von{" "}
+          ein kostenloser Service von{" "}
           <a href="https://hkp-solutions.de" target="_blank" rel="noopener noreferrer">
             hasenkamp solutions
           </a>
