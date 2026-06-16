@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR-Code Generator mit Logo</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #1a1d24;
+      --border: #2a2e38;
+      --text: #e6e8ec;
+      --muted: #9aa0ac;
+      --accent: #6366f1;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+    .app {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 24px;
+      max-width: 920px;
+      width: 100%;
+    }
+    @media (max-width: 760px) {
+      .app { grid-template-columns: 1fr; }
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    h1 { font-size: 18px; margin: 0 0 16px; }
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 14px 0 6px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    input[type="text"], input[type="url"], select {
+      width: 100%;
+      background: #0f1115;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+    .row { display: flex; gap: 12px; }
+    .row > div { flex: 1; }
+    input[type="color"] {
+      width: 100%;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0f1115;
+      cursor: pointer;
+    }
+    input[type="range"] { width: 100%; }
+    .preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    #qr {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.4);
+    }
+    .buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.secondary { background: #2a2e38; }
+    button:hover { opacity: .9; }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="panel">
+      <h1>QR-Code anpassen</h1>
+
+      <label>Inhalt (URL oder Text)</label>
+      <input type="text" id="data" value="https://example.com" />
+
+      <label>Logo in der Mitte</label>
+      <input type="file" id="logoFile" accept="image/*" />
+      <div class="hint">Bild auswählen — wird automatisch zentriert.</div>
+
+      <label>Punkt-Stil (abgerundet)</label>
+      <select id="dotsType">
+        <option value="rounded">Abgerundet</option>
+        <option value="dots">Punkte</option>
+        <option value="extra-rounded" selected>Extra abgerundet</option>
+        <option value="classy">Classy</option>
+        <option value="classy-rounded">Classy rounded</option>
+        <option value="square">Eckig</option>
+      </select>
+
+      <label>Ecken-Stil (Augen außen)</label>
+      <select id="cornerSquareType">
+        <option value="extra-rounded" selected>Extra abgerundet</option>
+        <option value="dot">Punkt</option>
+        <option value="square">Eckig</option>
+      </select>
+
+      <div class="row">
+        <div>
+          <label>Punkt-Farbe</label>
+          <input type="color" id="dotsColor" value="#1a1d24" />
+        </div>
+        <div>
+          <label>Hintergrund</label>
+          <input type="color" id="bgColor" value="#ffffff" />
+        </div>
+      </div>
+
+      <label>Logo-Größe: <span id="imgSizeVal">0.4</span></label>
+      <input type="range" id="imageSize" min="0.1" max="0.6" step="0.05" value="0.4" />
+
+      <label>Rand um Logo: <span id="marginVal">8</span>px</label>
+      <input type="range" id="imageMargin" min="0" max="24" step="1" value="8" />
+    </div>
+
+    <div class="panel preview">
+      <div id="qr"></div>
+      <div class="buttons">
+        <button id="downloadPng">PNG herunterladen</button>
+        <button id="downloadSvg" class="secondary">SVG herunterladen</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/qr-code-styling@1.6.0/lib/qr-code-styling.js"></script>
+  <script>
+    let logoDataUrl = "";
+
+    function buildOptions() {
+      return {
+        width: 320,
+        height: 320,
+        type: "svg",
+        data: document.getElementById("data").value || " ",
+        image: logoDataUrl || undefined,
+        qrOptions: {
+          errorCorrectionLevel: "H" // hoch -> verträgt Logo in der Mitte
+        },
+        dotsOptions: {
+          color: document.getElementById("dotsColor").value,
+          type: document.getElementById("dotsType").value
+        },
+        cornersSquareOptions: {
+          type: document.getElementById("cornerSquareType").value,
+          color: document.getElementById("dotsColor").value
+        },
+        cornersDotOptions: {
+          type: "dot",
+          color: document.getElementById("dotsColor").value
+        },
+        backgroundOptions: {
+          color: document.getElementById("bgColor").value
+        },
+        imageOptions: {
+          crossOrigin: "anonymous",
+          imageSize: parseFloat(document.getElementById("imageSize").value),
+          margin: parseInt(document.getElementById("imageMargin").value, 10),
+          hideBackgroundDots: true
+        }
+      };
+    }
+
+    const qrCode = new QRCodeStyling(buildOptions());
+    qrCode.append(document.getElementById("qr"));
+
+    function update() {
+      document.getElementById("imgSizeVal").textContent =
+        document.getElementById("imageSize").value;
+      document.getElementById("marginVal").textContent =
+        document.getElementById("imageMargin").value;
+      qrCode.update(buildOptions());
+    }
+
+    // Logo einlesen
+    document.getElementById("logoFile").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        logoDataUrl = ev.target.result;
+        update();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Alle Eingaben live verbinden
+    ["data", "dotsType", "cornerSquareType", "dotsColor", "bgColor", "imageSize", "imageMargin"]
+      .forEach((id) => {
+        document.getElementById(id).addEventListener("input", update);
+      });
+
+    document.getElementById("downloadPng").addEventListener("click", () => {
+      qrCode.download({ name: "qr-code", extension: "png" });
+    });
+    document.getElementById("downloadSvg").addEventListener("click", () => {
+      qrCode.download({ name: "qr-code", extension: "svg" });
+    });
+  </script>
+</body>
+</html>
