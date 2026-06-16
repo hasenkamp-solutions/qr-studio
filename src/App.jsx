@@ -487,7 +487,7 @@ export default function App() {
           <span className="brand-name">QR Studio</span>
         </div>
         <span className="brand-tag">
-          <Sparkles size={13} /> abgerundet &amp; mit Logo
+          <Sparkles size={13} /> Anpassbar &amp; mit Logo
         </span>
       </header>
 

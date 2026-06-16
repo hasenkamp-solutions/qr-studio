@@ -266,18 +266,52 @@ select.text-input {
 .checkbox {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 11px;
   font-size: 14px;
   color: var(--text);
   cursor: pointer;
   user-select: none;
+  padding: 2px 0;
 }
 
 .checkbox input[type="checkbox"] {
-  width: 17px;
-  height: 17px;
-  accent-color: var(--accent);
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
   cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.checkbox input[type="checkbox"]:hover {
+  border-color: var(--faint);
+}
+
+.checkbox input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.checkbox input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--on-accent);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox input[type="checkbox"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 255, 63, 0.16);
 }
 
 /* Inhaltstyp-Auswahl */
